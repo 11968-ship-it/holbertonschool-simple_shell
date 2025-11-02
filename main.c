@@ -23,7 +23,7 @@ if (isatty(STDIN_FILENO))
 write(STDOUT_FILENO, "\n", 1);
 break;
 }
-write(STDOUT_FILENO, line, nreade);
+write(STDOUT_FILENO, line, nread);
 }
 free(line);
 return (0);
