@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
-#define BUFFER SIZE = 1024
+#define BUFFER_SIZE 1024
 
 /* FUNCTION PROTOTYPES */
 
