@@ -3,46 +3,58 @@
 #include <stdio.h>
 
 /**
-* main - Simple shell that runs basic commands.
-* Return: Always 0
+* print_prompt - Prints the shell prompt
+*				if input is from terminal
 */
-
-int main(void)
-{
-char *line = NULL;
-size_t len = 0;
-ssize_t nread;
-pid_t child_pid;
-char *argv[2];
-
-/*هنا حلقة تدور إلى ما لا نهاية*/
-while (1)
+void print_prompt(void)
 {
 /* عشان نشيك إذا تم الطباعة فعلياً من الكيبورد (تيرمنال)*/
 if (isatty(STDIN_FILENO))
 /*استخدمناها بدال برنت اف لأنها system call */
 write(STDOUT_FILENO, "#cisfun$ ", 9);
+}
+
+/**
+* read_line - Reads a line from stdin
+*			and removes the newline
+* Return: Pointer to the line
+*/
+char *read_line(void)
+{
+char *line = NULL;
+size_t len = 0;
+ssize_t nread;
 
 nread = getline(&line, &len, stdin);
 if (nread == -1)
 {
-write(STDOUT_FILENO, "\n", 1);
-break; /*EOF*/
+free(line);
+return (NULL);
 }
-/* إذا ضغطت انتر جيت لاين يخزنه مع إضافة سطر جديد في النهاية وهنا حنا نضيف شرط يزيله*/
+
+	/* إذا ضغطت انتر جيت لاين يخزنه مع إضافة سطر جديد في النهاية وهنا حنا نضيف شرط يزيله*/
 if (line[nread - 1] == '\n')
 	line[nread -1] = '\0';
 /*هنا نحط عملية النسخ نفس قصة أمس*/
 
-if (line[0] == '\0')  /*يحذف الفراغات*/
-    continue; 
+	return (line);
+}
 
-	/* نبدا في الفورك */
+/**
+* execute_command - forks and executes
+*					a single-word command.
+* @line: command to execute
+*/
+void execute_command(char *line)
+{
+	pid_t child_pid;
+	char *argv[2];
+		/* نبدا في الفورك */
 child_pid = fork();
 if (child_pid == -1)
 {
 	perror("Error:");
-	continue;
+	return;
 }
 
 if (child_pid == 0)
@@ -56,10 +68,33 @@ if (child_pid == 0)
 	exit(EXIT_FAILURE);
 }
 else
-{
 	wait(NULL);
 }
-}
+	
+/**
+* main - Simple shell that runs basic commands.
+* Return: Always 0
+*/
+int main(void)
+{
+	char *line;
+	
+/*هنا حلقة تدور إلى ما لا نهاية*/
+while (1)
+{
+	print_prompt();
+
+	line = read_line();
+	if (!line)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		break; /*EOF*/
+	}
+
+if (line[0] != '\0')  /*يحذف الفراغات*/
+    execute_command(line);
+	
 free(line);
+}
 return (0);
 }
