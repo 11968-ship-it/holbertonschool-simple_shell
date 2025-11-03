@@ -27,13 +27,15 @@ nread = getline(&line, &len, stdin);
 if (nread == -1)
 {
 write(STDOUT_FILENO, "\n", 1);
-free(line);
-break;
+break; /*EOF*/
 }
 /* إذا ضغطت انتر جيت لاين يخزنه مع إضافة سطر جديد في النهاية وهنا حنا نضيف شرط يزيله*/
 if (line[nread - 1] == '\n')
 	line[nread -1] = '\0';
 /*هنا نحط عملية النسخ نفس قصة أمس*/
+
+if (line[0] == '\0')  /*يحذف الفراغات*/
+    continue; 
 
 	/* نبدا في الفورك */
 child_pid = fork();
@@ -49,7 +51,8 @@ if (child_pid == 0)
 	argv[1] = NULL;
 	/*changed NULL to environ*/
 	if (execve(argv[0], argv, environ) == -1)
-		perror("./hsh");
+		fprintf(stderr, "%s: No such file or directory\n", line);
+	
 	exit(EXIT_FAILURE);
 }
 else
