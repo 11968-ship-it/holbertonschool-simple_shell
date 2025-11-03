@@ -8,11 +8,16 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <errno.h>
 
 #define BUFFER_SIZE 1024
 
 /* FUNCTION PROTOTYPES */
-void simple_shell(void);
+extern char **environ;
 
+void simple_shell(void);
+void prompt(void);
+void execute(char *command);
+char *read_line(void);
 
 #endif
