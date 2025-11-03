@@ -21,22 +21,21 @@ write(STDOUT_FILENO, "#cisfun$ ", 9);
 */
 char *read_line(void)
 {
-char *line = NULL;
-size_t len = 0;
-ssize_t nread;
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t nread;
 
-nread = getline(&line, &len, stdin);
-if (nread == -1)
-{
-free(line);
-return (NULL);
-}
+	nread = getline(&line, &len, stdin);
+	if (nread == -1)
+	{
+	free(line);
+	return (NULL);
+	}
 
 	/* إذا ضغطت انتر جيت لاين يخزنه مع إضافة سطر جديد في النهاية وهنا حنا نضيف شرط يزيله*/
-if (line[nread - 1] == '\n')
-	line[nread -1] = '\0';
+	if (line[nread - 1] == '\n')
+		line[nread - 1] = '\0';
 /*هنا نحط عملية النسخ نفس قصة أمس*/
-
 	return (line);
 }
 
@@ -54,7 +53,6 @@ child_pid = fork();
 if (child_pid == -1)
 {
 	perror("Error:");
-	return;
 }
 
 if (child_pid == 0)
@@ -63,14 +61,15 @@ if (child_pid == 0)
 	argv[1] = NULL;
 	/*changed NULL to environ*/
 	if (execve(argv[0], argv, environ) == -1)
-		fprintf(stderr, "%s: No such file or directory\n", line);
-	
+		fprintf(stderr, "%s:
+				No such file or directory\n", line);
+
 	exit(EXIT_FAILURE);
 }
 else
 	wait(NULL);
 }
-	
+
 /**
 * main - Simple shell that runs basic commands.
 * Return: Always 0
@@ -78,7 +77,7 @@ else
 int main(void)
 {
 	char *line;
-	
+
 /*هنا حلقة تدور إلى ما لا نهاية*/
 while (1)
 {
@@ -92,8 +91,8 @@ while (1)
 	}
 
 if (line[0] != '\0')  /*يحذف الفراغات*/
-    execute_command(line);
-	
+	execute_command(line);
+
 free(line);
 }
 return (0);
