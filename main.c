@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 /**
-* print_prompt - Prints the shell prompt
+* prompt - Prints the shell prompt
 *				if input is from terminal
 */
-void print_prompt(void)
+void prompt(void)
 {
 /* عشان نشيك إذا تم الطباعة فعلياً من الكيبورد (تيرمنال)*/
 if (isatty(STDIN_FILENO))
@@ -40,11 +40,11 @@ char *read_line(void)
 }
 
 /**
-* execute_command - forks and executes
+* execute - forks and executes
 *					a single-word command.
-* @line: command to execute
+* @command: command to execute
 */
-void execute_command(char *line)
+void execute(char *command)
 {
 	pid_t child_pid;
 	char *argv[2];
@@ -57,12 +57,12 @@ if (child_pid == -1)
 
 if (child_pid == 0)
 {
-	argv[0] = line;
+	argv[0] = command;
 	argv[1] = NULL;
 	/*changed NULL to environ*/
 	if (execve(argv[0], argv, environ) == -1)
 		fprintf(stderr, "%s:No such file or directory\n",
-				line);
+				command); 
 
 	exit(EXIT_FAILURE);
 }
@@ -81,7 +81,7 @@ int main(void)
 /*هنا حلقة تدور إلى ما لا نهاية*/
 while (1)
 {
-	print_prompt();
+	prompt();
 
 	line = read_line();
 	if (!line)
@@ -91,7 +91,7 @@ while (1)
 	}
 
 if (line[0] != '\0')  /*يحذف الفراغات*/
-	execute_command(line);
+	execute(line);
 
 free(line);
 }
