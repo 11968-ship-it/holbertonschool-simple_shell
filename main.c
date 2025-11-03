@@ -61,8 +61,8 @@ if (child_pid == 0)
 	argv[1] = NULL;
 	/*changed NULL to environ*/
 	if (execve(argv[0], argv, environ) == -1)
-		fprintf(stderr, "%s:
-				No such file or directory\n", line);
+		fprintf(stderr, "%s:No such file or directory\n",
+				line);
 
 	exit(EXIT_FAILURE);
 }
