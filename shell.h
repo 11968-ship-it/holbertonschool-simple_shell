@@ -12,7 +12,7 @@
 #define BUFFER_SIZE 1024
 
 /* FUNCTION PROTOTYPES */
-
+void simple_shell(void);
 
 
 #endif
