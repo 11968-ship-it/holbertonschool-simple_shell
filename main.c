@@ -11,14 +11,38 @@ int main(void)
 {
 char *line = NULL;
 size_t len = 0;
+/*عدد الأحرف الللي بيقرأها gitline*/
 ssize_t nread;
+/*
 pid_t child_pid;
 char *argv[2];
-
+*/
+/*هنا حلقة تدور إلى ما لا نهاية*/
 while (1)
 {
-
+/* عشان نشيك إذا تم الطباعة فعلياً من الكيبورد (تيرمنال)*/
 if (isatty(STDIN_FILENO))
+/*استخدمناها بدال برنت اف لأنها system call */
+write(STDOUT_FILENO, "#cisfun$ ", 9);
+
+nread = getline(&line, &len, stdin);
+if (nread == -1)
+{
+write(STDOUT_FILENO, "\n", 1);
+free(line);
+break;
+}
+/* إذا ضغطت انتر جيت لاين يخزنه مع إضافة سطر جديد في النهاية وهنا حنا نضيف شرط يزيله*/
+if (line[nread - 1] == '\n')
+	line[nread -1] = '\0';
+/*هنا نحط عملية النسخ نفس قصة أمس*/
+
+
+}
+free(line);
+return (0);
+}
+/*if (isatty(STDIN_FILENO))
 write(STDOUT_FILENO, "($) ", 4);
 nread = getline(&line, &len, stdin);
 if (nread == -1)
@@ -51,7 +75,8 @@ else
 	wait(NULL);
 }
 }
-/** write(STDOUT_FILENO, line, nread); */
+/** write(STDOUT_FILENO, line, nread); 
 free(line);
 return (0);
 }
+*/
