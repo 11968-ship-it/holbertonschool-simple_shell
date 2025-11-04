@@ -1,7 +1,6 @@
-#include "shell.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include "shell.h"
 /**
 * prompt - Prints the shell prompt
 *				if input is from terminal
@@ -53,7 +52,7 @@ void execute(char *command)
 child_pid = fork();
 if (child_pid == -1)
 {
-	perror("Error:");
+	perror("fork");
 }
 
 if (child_pid == 0)
@@ -61,7 +60,7 @@ if (child_pid == 0)
 	argv[0] = command;
 	argv[1] = NULL;
 	/*changed NULL to environ*/
-	if (execve(argv[0], argv, environ);
+	if (execve(argv[0], argv, environ) == -1);
 		perror(command);
 
 	exit(EXIT_FAILURE);
