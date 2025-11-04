@@ -46,6 +46,7 @@ char *read_line(void)
 */
 void execute(char *command)
 {
+	extern char **environ;
 	pid_t child_pid;
 	char *argv[2];
 		/* نبدا في الفورك */
@@ -60,9 +61,8 @@ if (child_pid == 0)
 	argv[0] = command;
 	argv[1] = NULL;
 	/*changed NULL to environ*/
-	if (execve(argv[0], argv, environ) == -1)
-		fprintf(stderr, "%s:No such file or directory\n",
-				command); 
+	if (execve(argv[0], argv, environ);
+		perror(command);
 
 	exit(EXIT_FAILURE);
 }
