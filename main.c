@@ -62,7 +62,7 @@ if (child_pid == 0)
 	argv[0] = command;
 	argv[1] = NULL;
 	/*changed NULL to environ*/
-	if (execve(argv[0], argv, environ) == -1);
+	if (execve(argv[0], argv, environ) == -1)
 		perror(command);
 
 	exit(EXIT_FAILURE);
