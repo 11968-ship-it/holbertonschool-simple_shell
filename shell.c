@@ -40,7 +40,6 @@ return (line);
 */
 void execute(char *command)
 {
-extern char **environ;
 pid_t child_pid;
 char *argv[2];
 child_pid = fork();
