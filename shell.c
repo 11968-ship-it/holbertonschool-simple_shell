@@ -72,6 +72,7 @@ prompt();
 line = read_line();
 if (!line)
 {
+if (isatty(STDIN_FILENO))
 write(STDOUT_FILENO, "\n", 1);
 break;
 }
