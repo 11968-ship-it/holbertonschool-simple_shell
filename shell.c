@@ -47,7 +47,7 @@ void execute(char *command)
 	extern char **environ;
 	pid_t child_pid;
 	char *argv[2];
-	
+
 child_pid = fork();
 if (child_pid == -1)
 {
@@ -59,7 +59,7 @@ if (child_pid == 0)
 {
 	argv[0] = command;
 	argv[1] = NULL;
-	
+
 	if (execve(argv[0], argv, environ) == -1)
 		fprintf(stderr, "./shell: No such file or directory\n");
 
