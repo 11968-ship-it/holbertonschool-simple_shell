@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include "shell.h"
 
-extern char **environ;  // Needed for execve
+extern char **environ;
 
 void prompt(void)
 {
