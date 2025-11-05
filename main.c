@@ -7,8 +7,8 @@ int main(int argc, char **argv)
 {
     (void)argc;
     *shell_name = argv[0];
-    char *line, *token;
-    char *argv_list[64];
+    *line, *token;
+    *argv_list[64];
     int i;
 
     while (1)
