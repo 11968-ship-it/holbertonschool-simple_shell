@@ -41,7 +41,7 @@ return (line);
 void execute(char *command)
 {
 pid_t child_pid;
-char *argv[2];
+char *argv[64];
 child_pid = fork();
 if (child_pid == -1)
 {
