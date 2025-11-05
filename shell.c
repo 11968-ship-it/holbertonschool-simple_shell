@@ -36,13 +36,14 @@ return (line);
 /**
 * execute - forks and executes
 * a single-word command.
-* @command: command to execute
+* @argv: argument value
 */
-void execute(char *command)
+void execute(char **argv)
 {
+char *argv[2];
 pid_t child_pid;
-char *argv[64];
 child_pid = fork();
+
 if (child_pid == -1)
 {
 perror("fork");
@@ -50,14 +51,14 @@ return;
 }
 if (child_pid == 0)
 {
-argv[0] = command;
-argv[1] = NULL;
 if (execve(argv[0], argv, environ) == -1)
 fprintf(stderr, "./hsh: No such file or directory\n");
 exit(EXIT_FAILURE);
 }
 else
+{
 wait(NULL);
+}
 }
 /**
 * main - Simple shell that runs basic commands.
@@ -66,6 +67,9 @@ wait(NULL);
 int main(void)
 {
 char *line, *token;
+char *argv[64];
+int i = 0;
+
 while (1)
 {
 prompt();
@@ -78,11 +82,16 @@ break;
 }
 
   token = strtok(line, " \t\n");
-  while (token)
+  while (token != NULL)
     {
-      execute(token);
+      argv[i++] = token;
       token = strtok(NULL, " \t\n");
     }
+  argv[i] = NULL;
+
+  if (i > 0)
+    execute(argv);
+  
 free(line);
 }
 return (0);
