@@ -17,26 +17,24 @@ char *read_line(void)
 {
     char *line = NULL;
     size_t len = 0;
-    ssize_t nread;
+    ssize_t nread = getline(&line, &len, stdin);
 
-    nread = getline(&line, &len, stdin);
     if (nread == -1)
     {
         free(line);
         return NULL;
     }
 
-    if (line[nread - 1] == '\n')
+    if (nread > 0 && line[nread - 1] == '\n')
         line[nread - 1] = '\0';
 
     return line;
 }
 
-void execute(char **argv, char *shell_name)
+void execute(char **argv, const char *shell_name)
 {
-    pid_t child_pid;
+    pid_t child_pid = fork();
 
-    child_pid = fork();
     if (child_pid == -1)
     {
         perror("fork");
@@ -45,12 +43,14 @@ void execute(char **argv, char *shell_name)
 
     if (child_pid == 0)
     {
-        if (execve(argv[0], argv, environ) == -1)
-        {
-            fprintf(stderr, "%s: No such file or directory\n", shell_name);
-            exit(EXIT_FAILURE);
-        }
+        execve(argv[0], argv, environ);
+        fprintf(stderr, "%s: 1: %s: not found\n",
+                shell_name ? shell_name : "./hsh",
+                argv[0] ? argv[0] : "");
+            _exit(127);
     }
     else
+    {
         wait(NULL);
+    }
 }
