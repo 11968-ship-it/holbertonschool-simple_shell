@@ -3,8 +3,9 @@
 #include <string.h>
 #include "shell.h"
 
-int main(char **argv)
+int main(void)
 {
+    char **argv;
     char *shell_name = argv[0];
     char *line, *token;
     char *argv_list[64];
