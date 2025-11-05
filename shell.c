@@ -53,7 +53,7 @@ if (child_pid == 0)
 argv[0] = command;
 argv[1] = NULL;
 if (execve(argv[0], argv, environ) == -1)
-fprintf(stderr, "./shell: No such file or directory\n");
+fprintf(stderr, "./hsh: No such file or directory\n");
 exit(EXIT_FAILURE);
 }
 else
