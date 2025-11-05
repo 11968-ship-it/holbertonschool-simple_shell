@@ -39,7 +39,7 @@ return (line);
 * a single-word command.
 * @argv: argument value
 */
-void execute(char **argv)
+void execute(char **argv, *shell_name)
 {
 pid_t child_pid;
 
@@ -53,7 +53,7 @@ if (child_pid == 0)
 {
 if (execve(argv[0], argv, environ) == -1)
 {
-perror(argv[0]);
+fprintf(stderr, "%s: No such file or directory\n", shell_name);
 exit(EXIT_FAILURE);
 }
 }
@@ -64,8 +64,9 @@ wait(NULL);
 * main - Simple shell that runs basic commands.
 * Return: Always 0
 */
-int main(void)
+int main(int argc, char **argv)
 {
+char *shell_name = argv[0];
 char *line, *token;
 char *argv[64];
 int i;
@@ -91,7 +92,7 @@ break;
   argv[i] = NULL;
 
   if (i > 0)
-    execute(argv);
+    execute(argv, shell_name);
   
 free(line);
 }
