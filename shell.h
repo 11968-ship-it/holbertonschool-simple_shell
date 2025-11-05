@@ -17,7 +17,7 @@ extern char **environ;
 
 void simple_shell(void);
 void prompt(void);
-void execute(char **argv);
+void execute(char **argv, *shell_name);
 char *read_line(void);
 
 #endif
