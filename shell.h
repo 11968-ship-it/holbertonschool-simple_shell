@@ -10,8 +10,6 @@
 #include <sys/types.h>
 #include <errno.h>
 
-#define BUFFER_SIZE 1024
-
 /* FUNCTION PROTOTYPES */
 extern char **environ;
 
