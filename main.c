@@ -6,7 +6,7 @@
 int main(int argc, char **argv)
 {
     (void)argc;
-    *shell_name = argv[0];
+    const char *shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
     *line, *token;
     *argv_list[64];
     int i;
@@ -24,7 +24,8 @@ int main(int argc, char **argv)
 
         i = 0;
         token = strtok(line, " \t\n");
-        while (token != NULL)
+        while (token &&
+            i + 1 < (int)(sizeof(argv_list) / sizeof(argv_list[0])))
         {
             argv_list[i++] = token;
             token = strtok(NULL, " \t\n");
