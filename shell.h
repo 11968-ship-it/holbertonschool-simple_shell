@@ -14,7 +14,7 @@
 
 void simple_shell(void);
 void prompt(void);
-void execute(char **argv, char *shell_name);
+void execute(char **argv, const char *shell_name);
 char *read_line(void);
 
 #endif
