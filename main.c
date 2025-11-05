@@ -3,7 +3,7 @@
 #include <string.h>
 #include "shell.h"
 
-int main(int argc, char **argv)
+int main(char **argv)
 {
     char *shell_name = argv[0];
     char *line, *token;
