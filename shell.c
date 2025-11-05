@@ -40,8 +40,8 @@ return (line);
 */
 void execute(char **argv)
 {
-char *argv[2];
 pid_t child_pid;
+
 child_pid = fork();
 
 if (child_pid == -1)
@@ -52,13 +52,13 @@ return;
 if (child_pid == 0)
 {
 if (execve(argv[0], argv, environ) == -1)
+{
 fprintf(stderr, "./hsh: No such file or directory\n");
+}
 exit(EXIT_FAILURE);
 }
 else
-{
 wait(NULL);
-}
 }
 /**
 * main - Simple shell that runs basic commands.
