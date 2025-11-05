@@ -65,7 +65,7 @@ wait(NULL);
 */
 int main(void)
 {
-char *line;
+char *line, *token;
 while (1)
 {
 prompt();
@@ -76,6 +76,14 @@ if (isatty(STDIN_FILENO))
 write(STDOUT_FILENO, "\n", 1);
 break;
 }
+
+  token = strtok(line, " \t\n");
+  while (token)
+    {
+      execute(token);
+      token = strtok(NULL, " \t\n");
+    }
+  
 if (line[0] != '\0')
 execute(line);
 free(line);
