@@ -53,7 +53,7 @@ if (child_pid == 0)
 {
 if (execve(argv[0], argv, environ) == -1)
 {
-fprintf(stderr, "%s: No such file or directory\n", argv[0]);
+perror(argv[0]);
 exit(EXIT_FAILURE);
 }
 }
