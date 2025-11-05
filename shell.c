@@ -83,9 +83,6 @@ break;
       execute(token);
       token = strtok(NULL, " \t\n");
     }
-  
-if (line[0] != '\0')
-execute(line);
 free(line);
 }
 return (0);
