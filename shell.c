@@ -81,7 +81,6 @@ write(STDOUT_FILENO, "\n", 1);
 break;
 }
 
-int i = 0;
   token = strtok(line, " \t\n");
   while (token != NULL)
     {
