@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -43,7 +44,6 @@ void execute(char **argv)
 pid_t child_pid;
 
 child_pid = fork();
-
 if (child_pid == -1)
 {
 perror("fork");
@@ -53,9 +53,9 @@ if (child_pid == 0)
 {
 if (execve(argv[0], argv, environ) == -1)
 {
-fprintf(stderr, "./hsh: No such file or directory\n");
-}
+fprintf(stderr, "%s: No such file or directory\n", argv[0]);
 exit(EXIT_FAILURE);
+}
 }
 else
 wait(NULL);
@@ -68,7 +68,7 @@ int main(void)
 {
 char *line, *token;
 char *argv[64];
-int i = 0;
+int i;
 
 while (1)
 {
@@ -81,12 +81,13 @@ write(STDOUT_FILENO, "\n", 1);
 break;
 }
 
+  i = 0;
   token = strtok(line, " \t\n");
   while (token != NULL)
-    {
-      argv[i++] = token;
-      token = strtok(NULL, " \t\n");
-    }
+  {
+  argv[i++] = token;
+  token = strtok(NULL, " \t\n");
+  }
   argv[i] = NULL;
 
   if (i > 0)
