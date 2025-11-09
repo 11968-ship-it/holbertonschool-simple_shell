@@ -6,45 +6,45 @@
 
 int main(int argc, char **argv)
 {
-    const char *shell_name;
-    char *line;
-    char *token;
-    char *argv_list[64];
-    int i;
+	const char *shell_name;
+	char *line;
+	char *token;
+	char *argv_list[64];
+	int i;
 
-    (void)argc;
+	(void)argc;
 
-    shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
-    line = NULL;
-    token = NULL;
-    
-    while (1)
-    {
-        prompt();
-        line = read_line();
-        if (!line)
-        {
-            if (isatty(STDIN_FILENO))
-                write(STDOUT_FILENO, "\n", 1);
-            break;
-        }
+	shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
+	line = NULL;
+	token = NULL;
 
-        i = 0;
-        token = strtok(line, " \t\n");
-        while (token &&
-            i + 1 < (int)(sizeof(argv_list) / sizeof(argv_list[0])))
-        {
-            argv_list[i++] = token;
-            token = strtok(NULL, " \t\n");
-        }
-        argv_list[i] = NULL;
+	while (1)
+	{
+	prompt();
+	line = read_line();
+	if (!line)
+	{
+	if (isatty(STDIN_FILENO))
+	write(STDOUT_FILENO, "\n", 1);
+	break;
+	}
 
-        if (i > 0)
-            execute(argv_list, shell_name);
+	i = 0;
+	token = strtok(line, " \t\n");
+	while (token &&
+	i + 1 < (int)(sizeof(argv_list) / sizeof(argv_list[0])))
+	{
+	argv_list[i++] = token;
+	token = strtok(NULL, " \t\n");
+	}
+	argv_list[i] = NULL;
 
-        free(line);
-        line = NULL;
-    }
+	if (i > 0)
+	execute(argv_list, shell_name);
 
-    return 0;
+	free(line);
+	line = NULL;
+	}
+
+	return (0);
 }
