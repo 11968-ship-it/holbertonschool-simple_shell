@@ -47,31 +47,36 @@ char *read_line(void)
 */
 void execute(char **argv, const char *shell_name)
 {
-char *full_path = find_command_path(argv[0]);
-pid_t child_pid =  fork();
-if (!full_path)
+char *cmd_path;
+pid_t child_pid;
+
+	if (!argv || !argv[0])
+		return;
+
+	cmd_path = find_command_path(argv[0]);
+if (!cmd_path)
 {
 fprintf(stderr, "%s: 1: %s: not found\n",
 shell_name ? shell_name : "./hsh",
 argv[0]);
 return;
 }
+child_pid = fork();
 if (child_pid == -1)
 {
 perror("fork");
-free(full_path);
+free(cmd_path);
 return;
 }
 if (child_pid == 0)
 {
-execvp(argv[0], argv);
-fprintf(stderr, "%s: 1: %s: not found\n",
-shell_name ? shell_name : "./hsh",
-argv[0] ? argv[0] : "");
+execv(cmd_path, argv);
+perror("execv");
 _exit(127);
 }
 else
 {
 wait(NULL);
 }
+	free(cmd_path);
 }
