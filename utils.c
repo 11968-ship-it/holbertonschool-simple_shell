@@ -67,7 +67,7 @@ char *find_command_path(const char *command, char **env)
         }
     }
 
-    if (!path_env || path_env[0] == '\0')
+    if (!path_env)
         return NULL;
 
     path_copy = malloc(strlen(path_env) + 1);
