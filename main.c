@@ -70,7 +70,7 @@ line = NULL;
  * Description: Initializes the shell name and starts the
  * main shell loop. Handles EOF (Ctrl+D) gracefully.
  *
- * Return: Always 0.
+ * Return: Exit Status.
  */
 int main(int argc, char **argv)
 {
@@ -80,5 +80,5 @@ int main(int argc, char **argv)
 
 	shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
 	run_shell(shell_name);
-	return (0);
+	return (last_exit_status);
 }
