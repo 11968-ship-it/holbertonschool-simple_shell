@@ -59,6 +59,7 @@ void execute(char **argv, const char *shell_name)
         fprintf(stderr, "%s: 1: %s: not found\n",
                 shell_name ? shell_name : "./hsh",
                 argv[0]);
+        last_exit_status = 127;
         return;
     }
 
@@ -66,6 +67,7 @@ void execute(char **argv, const char *shell_name)
     if (child_pid == -1)
     {
         perror("fork");
+        last_exit_status = 1;
         free(cmd_path);
         return;
     }
@@ -77,7 +79,12 @@ void execute(char **argv, const char *shell_name)
         _exit(127);
     }
     else
-        wait(NULL);
-
+    {
+            waitpid(child_pid, &status, 0);
+        if (WIFEXITED(status))
+            last_exit_status = WEXITSTATUS(status);
+        else
+            last_exit_status = 1;
+    }
     free(cmd_path);
 }
