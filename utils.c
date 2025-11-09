@@ -46,8 +46,8 @@ char *find_command_path(const char *command, char **env)
         }
     }
 
-    if (!path_env)
-        path_env = "/bin:/usr/bin";
+    if (!path_env || path_env[0] == '\0')
+        return NULL;
 
     path_copy = malloc(strlen(path_env) + 1);
     if (!path_copy)
