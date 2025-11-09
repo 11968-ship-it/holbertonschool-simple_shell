@@ -7,12 +7,21 @@
 
 extern char **environ;
 
+/**
+* prompt - Prints the shell prompt
+* if input is from terminal
+*/
 void prompt(void)
 {
     if (isatty(STDIN_FILENO))
         write(STDOUT_FILENO, "#cisfun$ ", 9);
 }
 
+/**
+* read_line - Reads a line from stdin
+* and removes the newline
+* Return: Pointer to the line
+*/
 char *read_line(void)
 {
     char *line = NULL;
@@ -31,6 +40,11 @@ char *read_line(void)
     return line;
 }
 
+/**
+* execute - forks and executes
+* a single-word command.
+* @argv: argument value
+*/
 void execute(char **argv, const char *shell_name)
 {
     pid_t child_pid = fork();
