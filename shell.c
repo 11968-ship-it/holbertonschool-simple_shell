@@ -48,6 +48,7 @@ char *read_line(void)
 void execute(char **argv, const char *shell_name)
 {
 char *full_path = find_command_path(argv[0]);
+pid_t child_pid =  fork();
 if (!full_path)
 {
 fprintf(stderr, "%s: 1: %s: not found\n",
@@ -55,7 +56,6 @@ shell_name ? shell_name : "./hsh",
 argv[0]);
 return;
 }
-pid_t child_pid = fork();
 if (child_pid == -1)
 {
 perror("fork");
