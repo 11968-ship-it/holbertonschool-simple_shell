@@ -49,6 +49,13 @@ int argcnt;
 			break;
 		}
 
+			if (line[0] == '\x1b')
+	{
+		free(line);
+		line = NULL;
+		continue;
+	}
+		
 		argcnt = build_argv(line, argv_list,
 				    (int)(sizeof(argv_list) /
 					  sizeof(argv_list[0])));
