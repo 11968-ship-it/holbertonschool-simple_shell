@@ -5,18 +5,21 @@
 #include <stdio.h>
 
 /**
- * find_command_path - Finds the full path of a command
- * @command: The command name
+ * find_command_path - finds full path of a command
+ * @command: command name
+ * @env: environment array
  *
- * Return: Allocated string with the full path, or NULL if not found
+ * Return: malloc'd full path or NULL
  */
-char *find_command_path(const char *command)
+char *find_command_path(const char *command, char **env)
 {
-    char *path_env, *path_copy, *dir, *fullpath;
+    char *path_env = NULL;
+    char *path_copy, *dir, *fullpath;
     size_t len;
+    int i;
 
     if (!command)
-        return (NULL);
+        return NULL;
 
     if (command[0] == '/' || command[0] == '.')
     {
@@ -24,20 +27,31 @@ char *find_command_path(const char *command)
         {
             fullpath = malloc(strlen(command) + 1);
             if (!fullpath)
-                return (NULL);
+                return NULL;
             strcpy(fullpath, command);
-            return (fullpath);
+            return fullpath;
         }
-        return (NULL);
+        return NULL;
     }
 
-    path_env = getenv("PATH");
+    if (env)
+    {
+        for (i = 0; env[i]; i++)
+        {
+            if (strncmp(env[i], "PATH=", 5) == 0)
+            {
+                path_env = env[i] + 5;
+                break;
+            }
+        }
+    }
+
     if (!path_env)
         path_env = "/bin:/usr/bin";
 
     path_copy = malloc(strlen(path_env) + 1);
     if (!path_copy)
-        return (NULL);
+        return NULL;
     strcpy(path_copy, path_env);
 
     dir = strtok(path_copy, ":");
@@ -57,12 +71,12 @@ char *find_command_path(const char *command)
         if (access(fullpath, X_OK) == 0)
         {
             free(path_copy);
-            return (fullpath);
+            return fullpath;
         }
         free(fullpath);
         dir = strtok(NULL, ":");
     }
 
     free(path_copy);
-    return (NULL);
+    return NULL;
 }
