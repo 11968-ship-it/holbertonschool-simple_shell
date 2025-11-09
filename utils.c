@@ -12,7 +12,6 @@
 static char *get_path_from_env(char **env)
 {
     int i = 0;
-    char *val;
 
     if (!env)
         return NULL;
