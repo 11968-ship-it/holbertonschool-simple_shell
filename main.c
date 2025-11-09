@@ -49,15 +49,6 @@ write(STDOUT_FILENO, "\n", 1);
 break;
 }
 
-if (line[0] == '\x1b')
-{
-fprintf(stderr, "%s: No such file or directory\n",
-shell_name ? shell_name : "./hsh");
-free(line);
-line = NULL;
-continue;
-}
-
 argcnt = build_argv(line, argv_list,
 (int)(sizeof(argv_list) /
 sizeof(argv_list[0])));
