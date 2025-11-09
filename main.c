@@ -6,7 +6,6 @@
 
 int main(int argc, char **argv)
 {
-    (void)argc;
     const char *shell_name;
     char *line;
     char *token;
