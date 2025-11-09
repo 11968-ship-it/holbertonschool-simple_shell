@@ -17,5 +17,6 @@ void simple_shell(void);
 void prompt(void);
 void execute(char **argv, const char *shell_name);
 char *read_line(void);
+char *find_command_path(const char *command);
 
 #endif
