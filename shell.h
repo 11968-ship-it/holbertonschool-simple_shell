@@ -11,6 +11,7 @@
 #include <errno.h>
 
 /* FUNCTION PROTOTYPES */
+extern char **environ;
 
 void simple_shell(void);
 void prompt(void);

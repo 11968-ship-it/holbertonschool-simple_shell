@@ -73,7 +73,7 @@ int argcnt;
 int main(int argc, char **argv)
 {
 	const char *shell_name;
-	
+
 	(void)argc;
 
 	shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
