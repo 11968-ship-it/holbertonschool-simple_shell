@@ -8,6 +8,7 @@
 * get_path_from_env - helper to get PATH from env manually
 *
 * @env: the environment.
+*/
 static char *get_path_from_env(char **env)
 {
     int i = 0;
