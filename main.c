@@ -4,47 +4,79 @@
 #include <unistd.h>   /* isatty, write */
 #include "shell.h"
 
+/**
+ * build_argv - Split a line into an array of arguments.
+ * @line: The input line (will be modified by strtok).
+ * @argv_list: The output array of pointers.
+ * @max: The maximum number of arguments.
+ *
+ * Return: The number of tokens parsed (argc).
+ */
+static int build_argv(char *line, char **argv_list, int max)
+{
+int i = 0;
+char *tok = strtok(line, " \t\n");
+
+while (tok && i + 1 < max)
+{
+argv_list[i++] = tok;
+tok = strtok(NULL, " \t\n");
+}
+argv_list[i] = NULL;
+return (i);
+}
+
+/**
+ * run_shell - The main read–execute loop of the shell.
+ * @shell_name: Name of the shell program (argv[0]).
+ *
+ * Return: void.
+ */
+static void run_shell(const char *shell_name)
+{
+	char *line;
+char *argv_list[64];
+int argcnt;
+
+	for (;;)
+	{
+		prompt();
+		line = read_line();
+		if (!line)
+		{
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			break;
+		}
+
+		argcnt = build_argv(line, argv_list,
+				    (int)(sizeof(argv_list) /
+					  sizeof(argv_list[0])));
+		if (argcnt > 0)
+			execute(argv_list, shell_name);
+
+		free(line);
+		line = NULL;
+	}
+}
+
+/**
+ * main - Program entry point.
+ * @argc: Argument count.
+ * @argv: Argument vector.
+ *
+ * Description: Initializes the shell name and starts the
+ * main shell loop. Handles EOF (Ctrl+D) gracefully.
+ *
+ * Return: Always 0.
+ */
 int main(int argc, char **argv)
 {
 	const char *shell_name;
-	char *line;
-	char *token;
-	char *argv_list[64];
-	int i;
-
+	
 	(void)argc;
 
 	shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
-	line = NULL;
-	token = NULL;
-
-	while (1)
-	{
-	prompt();
-	line = read_line();
-	if (!line)
-	{
-	if (isatty(STDIN_FILENO))
-	write(STDOUT_FILENO, "\n", 1);
-	break;
-	}
-
-	i = 0;
-	token = strtok(line, " \t\n");
-	while (token &&
-	i + 1 < (int)(sizeof(argv_list) / sizeof(argv_list[0])))
-	{
-	argv_list[i++] = token;
-	token = strtok(NULL, " \t\n");
-	}
-	argv_list[i] = NULL;
-
-	if (i > 0)
-	execute(argv_list, shell_name);
-
-	free(line);
-	line = NULL;
-	}
-
+	run_shell(shell_name);
 	return (0);
 }
