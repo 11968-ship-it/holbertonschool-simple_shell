@@ -49,6 +49,7 @@ void execute(char **argv, const char *shell_name)
 {
     char *cmd_path;
     pid_t child_pid;
+    int status;
 
     if (!argv || !argv[0])
         return;
