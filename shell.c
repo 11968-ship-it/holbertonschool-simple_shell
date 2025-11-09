@@ -53,7 +53,7 @@ void execute(char **argv, const char *shell_name)
     if (!argv || !argv[0])
         return;
 
-    cmd_path = find_command_path(argv[0]);
+    cmd_path = find_command_path(argv[0], environ);
     if (!cmd_path)
     {
         fprintf(stderr, "%s: 1: %s: not found\n",
