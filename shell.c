@@ -57,7 +57,7 @@ void execute(char **argv, const char *shell_name)
 
 	if (child_pid == 0)
 	{
-	execve(argv[0], argv, environ);
+	execvp(argv[0], argv);
 	fprintf(stderr, "%s: 1: %s: not found\n",
 	shell_name ? shell_name : "./hsh",
 	argv[0] ? argv[0] : "");
