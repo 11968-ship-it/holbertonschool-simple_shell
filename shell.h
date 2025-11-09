@@ -12,7 +12,7 @@
 
 /* FUNCTION PROTOTYPES */
 extern char **environ;
-
+int last_exit_status = 0;
 void simple_shell(void);
 void prompt(void);
 void execute(char **argv, const char *shell_name);
