@@ -55,18 +55,6 @@ char *find_command_path(const char *command, char **env)
         return NULL;
     }
 
-    if (env)
-    {
-        for (i = 0; env[i]; i++)
-        {
-            if (strncmp(env[i], "PATH=", 5) == 0)
-            {
-                path_env = env[i] + 5;
-                break;
-            }
-        }
-    }
-
     if (!path_env)
         return NULL;
 
