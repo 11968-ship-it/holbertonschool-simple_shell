@@ -34,37 +34,39 @@ return (i);
  */
 static void run_shell(const char *shell_name)
 {
-	char *line;
+char *line;
 char *argv_list[64];
 int argcnt;
 
-	for (;;)
-	{
-		prompt();
-		line = read_line();
-		if (!line)
-		{
-			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
-			break;
-		}
+for (;;)
+{
+prompt();
+line = read_line();
+if (!line)
+{
+if (isatty(STDIN_FILENO))
+write(STDOUT_FILENO, "\n", 1);
+break;
+}
 
-			if (line[0] == '\x1b')
-	{
-		free(line);
-		line = NULL;
-		continue;
-	}
-		
-		argcnt = build_argv(line, argv_list,
-				    (int)(sizeof(argv_list) /
-					  sizeof(argv_list[0])));
-		if (argcnt > 0)
-			execute(argv_list, shell_name);
+if (line[0] == '\x1b')
+{
+fprintf(stderr, "%s: No such file or directory\n",
+shell_name ? shell_name : "./hsh");
+free(line);
+line = NULL;
+continue;
+}
 
-		free(line);
-		line = NULL;
-	}
+argcnt = build_argv(line, argv_list,
+(int)(sizeof(argv_list) /
+sizeof(argv_list[0])));
+if (argcnt > 0)
+execute(argv_list, shell_name);
+
+free(line);
+line = NULL;
+}
 }
 
 /**
