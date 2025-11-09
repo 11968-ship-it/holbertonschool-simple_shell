@@ -5,6 +5,27 @@
 #include <stdio.h>
 
 /**
+* get_path_from_env - helper to get PATH from env manually
+*
+* @env: the environment.
+static char *get_path_from_env(char **env)
+{
+    int i = 0;
+    char *val;
+
+    if (!env)
+        return NULL;
+
+    while (env[i])
+    {
+        if (strncmp(env[i], "PATH=", 5) == 0)
+            return env[i] + 5;
+        i++;
+    }
+    return NULL; /* PATH not found */
+}
+
+/**
  * find_command_path - finds full path of a command
  * @command: command name
  * @env: environment array
