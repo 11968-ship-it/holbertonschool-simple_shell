@@ -1,71 +1,68 @@
 #include "shell.h"
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 /**
  * find_command_path - Finds the full path of a command
  * @command: The command name
  *
- * Return: Pointer to malloc'ed full path, or NULL if not found
+ * Return: Allocated string with the full path, or NULL if not found
  */
 char *find_command_path(const char *command)
 {
-    char *paths[] = { "/bin", "/usr/bin", NULL };
-    int i;
-    char *fullpath;
+    char *path_env, *path_copy, *dir, *fullpath;
     size_t len;
 
     if (!command)
-        return NULL;
+        return (NULL);
 
-    if (command[0] == '/')
+    if (command[0] == '/' || command[0] == '.')
     {
         if (access(command, X_OK) == 0)
         {
             fullpath = malloc(strlen(command) + 1);
             if (!fullpath)
-                return NULL;
+                return (NULL);
             strcpy(fullpath, command);
-            return fullpath;
+            return (fullpath);
         }
-        return NULL;
+        return (NULL);
     }
 
-    for (i = 0; paths[i] != NULL; i++)
+    path_env = getenv("PATH");
+    if (!path_env)
+        path_env = "/bin:/usr/bin";
+
+    path_copy = malloc(strlen(path_env) + 1);
+    if (!path_copy)
+        return (NULL);
+    strcpy(path_copy, path_env);
+
+    dir = strtok(path_copy, ":");
+    while (dir)
     {
-        len = strlen(paths[i]) + 1 + strlen(command) + 1;
+        len = strlen(dir) + 1 + strlen(command) + 1;
         fullpath = malloc(len);
         if (!fullpath)
+        {
+            dir = strtok(NULL, ":");
             continue;
-        strcpy(fullpath, paths[i]);
+        }
+        strcpy(fullpath, dir);
         strcat(fullpath, "/");
         strcat(fullpath, command);
+
         if (access(fullpath, X_OK) == 0)
-            return fullpath;
+        {
+            free(path_copy);
+            return (fullpath);
+        }
         free(fullpath);
+        dir = strtok(NULL, ":");
     }
 
-    return NULL;
-}
-
-/**
- * get_env_path - Returns the value of the PATH environment variable
- *
- * Return: Pointer to the PATH string, or NULL if not found
- */
-char *get_env_path(void)
-{
-    extern char **environ;
-    int i = 0;
-    size_t len = strlen("PATH=");
-
-    while (environ[i])
-    {
-        if (strncmp(environ[i], "PATH=", len) == 0)
-            return environ[i] + len;
-        i++;
-    }
-    return NULL;
+    free(path_copy);
+    return (NULL);
 }
