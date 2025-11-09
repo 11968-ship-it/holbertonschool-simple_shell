@@ -35,7 +35,6 @@ static char *get_path_from_env(char **env)
 char *find_command_path(const char *command, char **env)
 {
     char *path_env = get_path_from_env(env);
-    char *path_env = NULL;
     char *path_copy, *dir, *fullpath;
     size_t len;
     int i;
