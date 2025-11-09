@@ -4,6 +4,8 @@
 #include <unistd.h>   /* isatty, write */
 #include "shell.h"
 
+int last_exit_status = 0;
+
 /**
  * build_argv - Split a line into an array of arguments.
  * @line: The input line (will be modified by strtok).
