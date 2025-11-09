@@ -1,32 +1,45 @@
 #include "shell.h"
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
 
 /**
 * find_command_path: finds the path of command
-* @cmd: command.
+* @command: the command name.
 */
 
-char *find_command_path(const char *cmd)
+char *find_command_path(const char *command)
 {
-    char *path_env, *path_copy, *dir, full_path[1024];
-    if (!cmd)
+    char char *paths[] = { "/bin", "/usr/bin", NULL };
+    int i;
+    char *fullpath;
+    size_t len;
+    if (!command)
         return (NULL);
-    if (access(cmd, X_OK) == 0)
-        return (strdup(cmd)); /* absolute or relative path */
-    path_env = getenv("PATH");
-    if (!path_env)
-        return (NULL);
-    path_copy = strdup(path_env);
-    dir = strtok(path_copy, ":");
-    while (dir)
+    if (command[0] == '/')
     {
-        snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
-        if (access(full_path, X_OK) == 0)
+        if (access(command, X_OK) == 0)
         {
-            free(path_copy);
-            return (strdup(full_path));
+            fullpath = malloc(strlen(command) + 1);
+            if (!fullpath)
+                return (NULL);
+            strcpy(fullpath, command);
+            return (fullpath);
         }
-        dir = strtok(NULL, ":");
+        return (NULL);
     }
-    free(path_copy);
+    for (i = 0; paths[i] !- NULL; i++)
+        {
+        len = strlen(paths[i]) + 1 + strlen(command) + 1;
+        fullpath = malloc(len);
+    if (!fullpath)
+        continue;
+    strcpy(fullpath, paths[i]);
+    strcat(fullpath, "/");
+    strcat(fullpath, command);
+    if (access(fullpath, X_OK) == 0)
+            return (fullpath);
+        free(fullpath);
+}
     return (NULL);
 }
