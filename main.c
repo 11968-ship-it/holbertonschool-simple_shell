@@ -12,6 +12,12 @@ int main(int argc, char **argv)
     *argv_list[64];
     int i;
 
+    (void)argc;
+
+    shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
+    line = NULL;
+    token = NULL;
+    
     while (1)
     {
         prompt();
@@ -37,6 +43,7 @@ int main(int argc, char **argv)
             execute(argv_list, shell_name);
 
         free(line);
+        line = NULL;
     }
 
     return 0;
