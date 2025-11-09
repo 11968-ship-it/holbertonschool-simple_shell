@@ -44,6 +44,8 @@ char *read_line(void)
 * execute - forks and executes
 * a single-word command.
 * @argv: argument value
+* @shell_name: name of this shell (argv[0] of the shell), 
+* used in errors.
 */
 void execute(char **argv, const char *shell_name)
 {
