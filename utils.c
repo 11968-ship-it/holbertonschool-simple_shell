@@ -10,7 +10,7 @@
 
 char *find_command_path(const char *command)
 {
-    char char *paths[] = { "/bin", "/usr/bin", NULL };
+    char *paths[] = { "/bin", "/usr/bin", NULL };
     int i;
     char *fullpath;
     size_t len;
@@ -28,7 +28,7 @@ char *find_command_path(const char *command)
         }
         return (NULL);
     }
-    for (i = 0; paths[i] !- NULL; i++)
+    for (i = 0; paths[i] != NULL; i++)
         {
         len = strlen(paths[i]) + 1 + strlen(command) + 1;
         fullpath = malloc(len);
