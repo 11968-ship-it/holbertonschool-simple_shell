@@ -31,8 +31,12 @@ char *read_line(void)
         return (NULL);
     }
 
-    while (nread > 0 && (line[nread - 1] == '\n' || line[nread - 1] == ' '))
-        line[--nread] = '\0';
+while (nread > 0 &&
+	       (line[nread - 1] == '\n' ||
+	        line[nread - 1] == ' ' ||
+	        line[nread - 1] == '\r' ||
+	        line[nread - 1] == '\t'))
+    line[--nread] = '\0';
 
     return (line);
 }
