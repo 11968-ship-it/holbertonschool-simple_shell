@@ -91,19 +91,12 @@ pid_t child_pid;
  * @shell_name: Name of the shell, used in error messages.
  * @last_exit_status: Pointer to store the command's exit status.
  */
-void execute(char **argv, const char *shell_name, int *last_exit_status, char *line)
+void execute(char **argv, const char *shell_name, int *last_exit_status)
 {
     char *cmd_path;
 
     if (!argv || !argv[0])
         return;
-
-    /* Built-in: exit */
-    if (strcmp(argv[0], "exit") == 0)
-    {
-        free(line);
-        exit(*last_exit_status);
-    }
 
     cmd_path = find_command_path(argv[0], environ);
     if (!cmd_path)
