@@ -3,12 +3,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-
 /**
-* get_path_from_env - helper to get PATH from env manually
-*
-* @env: the environment array.
-*/
+ * get_path_from_env - Gets the PATH value from the environment.
+ * Searches the environment array for "PATH=" and returns its value.
+ * @env: Environment variable array.
+ *
+ * Return: Pointer to PATH value or NULL if not found.
+ */
 static char *get_path_from_env(char **env)
 {
 	int i = 0;
@@ -26,10 +27,13 @@ static char *get_path_from_env(char **env)
 }
 
 /**
-* check_absolute - checks if command is absolute or relative path
-*
-* @command: command name
-*/
+ * check_absolute - Checks if a command path is absolute.
+ * Returns a copy of the command path if it starts with '/' or '.'
+ * and is executable.
+ * @command: Command name to check.
+ *
+ * Return: Malloc'd path if valid, otherwise NULL.
+ */
 static char *check_absolute(const char *command)
 {
 	char *fullpath;
