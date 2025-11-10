@@ -16,7 +16,7 @@ void prompt(void)
 
 /**
 * read_line - reads a line and removes newline
-* 
+*
 * Return: A malloc'd string containing the user
 * input (without newline), or NULL on EOF or error
  */
