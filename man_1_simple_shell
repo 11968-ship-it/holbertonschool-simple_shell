@@ -1,1 +1,135 @@
+.TH hsh 1 "November 2025" "Holberton School" "Simple Shell"
 
+.SH NAME
+hsh \- a basic UNIX command line interpreter
+
+.SH SYNOPSIS
+.B hsh
+.RI [ input_file ]
+
+.SH DESCRIPTION
+.B hsh
+is a minimalist UNIX command line interpreter that replicates basic shell functionality. It reads commands from the user, locates executables, and executes them in child processes.
+
+When run interactively, the shell displays a prompt and waits for user input. When run non-interactively (via a pipe or script), it executes commands from standard input until end-of-file (EOF).
+
+Each command is executed in a new process. The parent waits for the child to complete before displaying the next prompt.
+
+.SH FEATURES
+.TP
+Displays a prompt
+.RB ("#cisfun$") when input is from a terminal.
+.TP
+Executes commands using
+.B execve (2)
+and waits for completion.
+.TP
+Searches for executables using the
+.B PATH
+environment variable.
+.TP
+Handles absolute and relative paths.
+.TP
+Implements two built-in commands:
+.B exit
+and
+.B env
+(exit does not accept arguments).
+.TP
+Handles end-of-file (Ctrl+D) gracefully.
+.TP
+Displays error messages when a command cannot be executed.
+
+.SH BUILTINS
+.TP
+.B exit
+Exits the shell with the status of the last executed command. No arguments are supported.
+.TP
+.B env
+Prints the current environment, one variable per line, in the form:
+.RS
+VAR=value
+.RE
+Variables are printed in the order provided by the operating system. The environment is not modified.
+
+.SH USAGE
+Run interactively:
+.RS
+$ ./hsh
+#cisfun$ /bin/ls
+AUTHORS  README.md  main.c  shell.c  shell.h  utils.c  man_1_simple_shell
+#cisfun$ env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin
+#cisfun$ exit
+.RE
+
+Run non-interactively:
+.RS
+$ echo "/bin/ls" | ./hsh
+AUTHORS  README.md  main.c  shell.c  shell.h  utils.c  man_1_simple_shell
+.RE
+
+.SH RETURN VALUE
+Exits with the status code of the last executed command. If no command was executed, exits with 0.
+
+.SH ENVIRONMENT
+.TP
+.B PATH
+Colon-separated list of directories to search for executables.
+.TP
+.B HOME
+User's home directory.
+.TP
+.B PWD
+Current working directory.
+
+.SH FILES
+.TP
+.I /bin/sh
+Standard system shell used as a reference.
+
+.SH DIAGNOSTICS
+.TP
+.B ./hsh: 1: command: not found
+Occurs when the entered command cannot be located in any directory listed in
+.B PATH
+or is not executable.
+.TP
+.B End-of-file (Ctrl+D)
+Exits the shell gracefully.
+.TP
+.B Ctrl+C (SIGINT)
+Interrupts the current command if running, or terminates the shell if no child process is active.
+
+.SH EXAMPLES
+.RS
+$ ./hsh
+#cisfun$ ls
+AUTHORS  README.md  main.c  shell.c  shell.h  utils.c  man_1_simple_shell
+#cisfun$ /bin/pwd
+/root/holbertonschool-simple_shell
+#cisfun$ env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin
+#cisfun$ exit
+.RE
+
+.SH AUTHORS
+Thekira A. Ahmed & Yara K. Alrasheed
+
+.SH BUGS
+Does not support:
+.IP \(bu 2
+Command chaining (&&, ||)
+.IP \(bu 2
+I/O redirection (>, <, >>)
+.IP \(bu 2
+Arguments to the exit built-in command
+.Report issues via your project repository.
+
+.SH SEE ALSO
+.BR sh (1),
+.BR execve (2),
+.BR fork (2),
+.BR waitpid (2),
+.BR access (2),
+.BR strtok (3)
