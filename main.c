@@ -59,6 +59,7 @@ execute(argv_list, shell_name, &last_exit_status);
 free(line);
 line = NULL;
 }
+	return (last_exit_status);
 }
 
 /**
