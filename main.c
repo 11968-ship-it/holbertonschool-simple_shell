@@ -75,10 +75,11 @@ line = NULL;
 int main(int argc, char **argv)
 {
 	const char *shell_name;
+	int last_exit_status;
 
 	(void)argc;
 
 	shell_name = (argv && argv[0]) ? argv[0] : "./hsh";
-	run_shell(shell_name);
+	last_exit_status = run_shell(shell_name);
 	return (last_exit_status);
 }
