@@ -44,9 +44,14 @@ char *find_command_path(const char *command, char **env);
 
 
 Description
-This project provides an im
+This project implements a simple UNIX command-line shell in C. It reads user input, parses commands,
+and executes them as built-ins or by searching the system PATH.
+The shell supports basic built-in commands like `exit` and `env`, handles arguments, and manages memory
+safely using `malloc` and `free`.
 
-The project als
+Designed for learning purposes, it reinforces key concepts such as process creation, system calls,
+and error handling, giving students practical experience in building a functional shell and understandin
+how command execution works in UNIX systems.
 
 Compilation
 We used the basic gcc compiler:
@@ -56,4 +61,6 @@ gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
 
 Authors
+```
 Thekira A. Ahmed & Yara K. Alrasheed
+```
