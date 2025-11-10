@@ -40,29 +40,10 @@ line[--nread] = '\0';
 return (line);
 }
 
-/**
-* execute - executes a command
-* @argv: arguments array
-* @shell_name: shell name (for errors)
-*/
-void execute(char **argv, const char *shell_name, int *last_exit_status)
+static void run_child(char *cmd_path, char **argv, int *last_exit_status)
 {
-	char *cmd_path;
-	pid_t child_pid;
+pid_t child_pid;
 	int status;
-
-	if (!argv || !argv[0])
-	return;
-
-	cmd_path = find_command_path(argv[0], environ);
-	if (!cmd_path)
-	{
-	fprintf(stderr, "%s: 1: %s: not found\n",
-	shell_name ? shell_name : "./hsh",
-	argv[0]);
-	*last_exit_status = 127;
-	return;
-	}
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -87,5 +68,29 @@ void execute(char **argv, const char *shell_name, int *last_exit_status)
 	else
 	*last_exit_status = 1;
 	}
+}
+
+/**
+* execute - executes a command
+* @argv: arguments array
+* @shell_name: shell name (for errors)
+*/
+void execute(char **argv, const char *shell_name, int *last_exit_status)
+{
+	char *cmd_path;
+
+	if (!argv || !argv[0])
+	return;
+
+	cmd_path = find_command_path(argv[0], environ);
+	if (!cmd_path)
+	{
+	fprintf(stderr, "%s: 1: %s: not found\n",
+	shell_name ? shell_name : "./hsh",
+	argv[0]);
+	*last_exit_status = 127;
+	return;
+	}
+	run_child(cmd_path, argv, last_exit_status);
 	free(cmd_path);
 }
