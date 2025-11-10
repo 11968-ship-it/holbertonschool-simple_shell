@@ -4,8 +4,6 @@
 #include <unistd.h>   /* isatty, write */
 #include "shell.h"
 
-int last_exit_status = 0;
-
 /**
  * build_argv - Split a line into an array of arguments.
  * @line: The input line (will be modified by strtok).
@@ -39,6 +37,7 @@ static void run_shell(const char *shell_name)
 char *line;
 char *argv_list[64];
 int argcnt;
+int last_exit_status = 0;
 
 for (;;)
 {
@@ -55,7 +54,7 @@ argcnt = build_argv(line, argv_list,
 (int)(sizeof(argv_list) /
 sizeof(argv_list[0])));
 if (argcnt > 0)
-execute(argv_list, shell_name);
+execute(argv_list, shell_name, &last_exit_status);
 
 free(line);
 line = NULL;
