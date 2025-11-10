@@ -97,7 +97,12 @@ void execute(char **argv, const char *shell_name, int *last_exit_status)
 
     if (!argv || !argv[0])
         return;
-
+	
+ if (strcmp(argv[0], "exit") == 0)
+    {
+        exit(*last_exit_status);
+    }
+	
     cmd_path = find_command_path(argv[0], environ);
     if (!cmd_path)
     {
