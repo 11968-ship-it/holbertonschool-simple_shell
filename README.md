@@ -49,9 +49,7 @@ and executes them as built-ins or by searching the system PATH.
 The shell supports basic built-in commands like `exit` and `env`, handles arguments, and manages memory
 safely using `malloc` and `free`.
 
-Designed for learning purposes, it reinforces key concepts such as process creation, system calls,
-and error handling, giving students practical experience in building a functional shell and understandin
-how command execution works in UNIX systems.
+Designed for learning purposes, it reinforces key concepts such as process creation, system calls, and error handling, giving students practical experience in building a functional shell and understanding how command execution works in UNIX systems.
 
 Compilation
 We used the basic gcc compiler:
