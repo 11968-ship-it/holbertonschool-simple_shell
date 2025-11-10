@@ -32,7 +32,7 @@ return (i);
  *
  * Return: void.
  */
-static void run_shell(const char *shell_name)
+static int run_shell(const char *shell_name)
 {
 char *line;
 char *argv_list[64];
