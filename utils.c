@@ -7,7 +7,7 @@
 /**
 * get_path_from_env - helper to get PATH from env manually
 *
-* @env: the environment.
+* @env: the environment array.
 */
 static char *get_path_from_env(char **env)
 {
@@ -50,34 +50,17 @@ static char *check_absolute(const char *command)
 }
 
 /**
-* find_command_path - finds full path of a command
-* @command: command name
-* @env: environment array
-*
-* Return: malloc'd full path or NULL
-*/
-char *find_command_path(const char *command, char **env)
+ * build_fullpath - iterate PATH directories to find command
+ * @path_copy: copy of PATH string
+ * @command: command string
+ * Return: malloc'd full path or NULL
+ */
+static char *build_fullpath(char *path_copy, const char *command)
 {
-	char *path_env, *path_copy, *dir, *fullpath;
+	char *dir, *fullpath;
 	size_t len;
 
-	if (!command)
-	return (NULL);
-
-	fullpath = check_absolute(command);
-	if (fullpath)
-		return (fullpath);
-
-	path_env = get_path_from_env(env);
-	if (!path_env)
-		return (NULL);
-
-	path_copy = malloc(strlen(path_env) + 1);
-	if (!path_copy)
-	return (NULL);
-	strcpy(path_copy, path_env);
-
-	dir = strtok(path_copy, ":");
+		dir = strtok(path_copy, ":");
 	while (dir)
 	{
 	len = strlen(dir) + 1 + strlen(command) + 1;
@@ -99,7 +82,38 @@ char *find_command_path(const char *command, char **env)
 	free(fullpath);
 	dir = strtok(NULL, ":");
 	}
+return (NULL);
+}
 
-	free(path_copy);
+/**
+* find_command_path - finds full path of a command
+* @command: command name
+* @env: environment array
+*
+* Return: malloc'd full path or NULL
+*/
+char *find_command_path(const char *command, char **env)
+{
+	char *path_env, *path_copy, *fullpath;
+
+	if (!command)
 	return (NULL);
+
+	fullpath = check_absolute(command);
+	if (fullpath)
+		return (fullpath);
+
+	path_env = get_path_from_env(env);
+	if (!path_env)
+		return (NULL);
+
+	path_copy = malloc(strlen(path_env) + 1);
+	if (!path_copy)
+	return (NULL);
+	strcpy(path_copy, path_env);
+
+	fullpath = build_fullpath(path_copy, command);
+	free(path_copy);
+	
+	return (fullpath);
 }
