@@ -19,7 +19,7 @@ static char *get_path_from_env(char **env)
 	while (env[i])
 	{
 	if (strncmp(env[i], "PATH=", 5) == 0)
-	return env[i] + 5;
+	return (env[i] + 5);
 	i++;
 	}
 	return (NULL);
@@ -49,7 +49,7 @@ char *find_command_path(const char *command, char **env)
 	if (!fullpath)
 	return (NULL);
 	strcpy(fullpath, command);
-	return fullpath;
+	return (fullpath);
 	}
 	return (NULL);
 	}
