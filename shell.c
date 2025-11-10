@@ -100,7 +100,6 @@ void execute(char **argv, const char *shell_name, int *last_exit_status)
    /* Built-in: exit */
     if (strcmp(argv[0], "exit") == 0)
     {
-        free(argv);
         exit(*last_exit_status);
     }
 
