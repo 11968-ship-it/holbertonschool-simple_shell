@@ -76,7 +76,6 @@ static char *build_fullpath(char *path_copy, const char *command)
 
 	if (access(fullpath, X_OK) == 0)
 	{
-	free(path_copy);
 	return (fullpath);
 	}
 	free(fullpath);
@@ -114,6 +113,6 @@ char *find_command_path(const char *command, char **env)
 
 	fullpath = build_fullpath(path_copy, command);
 	free(path_copy);
-	
+
 	return (fullpath);
 }
