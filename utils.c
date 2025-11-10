@@ -32,21 +32,21 @@ static char *get_path_from_env(char **env)
 */
 static char *check_absolute(const char *command)
 {
-    char *fullpath;
+	char *fullpath;
 
-    if (command[0] == '/' || command[0] == '.')
-    {
-        if (access(command, X_OK) == 0)
-        {
-            fullpath = malloc(strlen(command) + 1);
-            if (!fullpath)
-                return (NULL);
-            strcpy(fullpath, command);
-            return (fullpath);
-        }
-        return (NULL);
-    }
-    return (NULL);
+	if (command[0] == '/' || command[0] == '.')
+	{
+	if (access(command, X_OK) == 0)
+	{
+	fullpath = malloc(strlen(command) + 1);
+	if (!fullpath)
+	return (NULL);
+	strcpy(fullpath, command);
+	return (fullpath);
+	}
+	return (NULL);
+	}
+	return (NULL);
 }
 
 /**
@@ -58,8 +58,7 @@ static char *check_absolute(const char *command)
 */
 char *find_command_path(const char *command, char **env)
 {
-	char *path_env = get_path_from_env(env);
-	char *path_copy, *dir, *fullpath;
+	char *path_env, *path_copy, *dir, *fullpath;
 	size_t len;
 
 	if (!command)
