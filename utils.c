@@ -26,6 +26,30 @@ static char *get_path_from_env(char **env)
 }
 
 /**
+* check_absolute - checks if command is absolute or relative path
+*
+* @command: command name
+*/
+static char *check_absolute(const char *command)
+{
+    char *fullpath;
+
+    if (command[0] == '/' || command[0] == '.')
+    {
+        if (access(command, X_OK) == 0)
+        {
+            fullpath = malloc(strlen(command) + 1);
+            if (!fullpath)
+                return (NULL);
+            strcpy(fullpath, command);
+            return (fullpath);
+        }
+        return (NULL);
+    }
+    return (NULL);
+}
+
+/**
 * find_command_path - finds full path of a command
 * @command: command name
 * @env: environment array
@@ -41,21 +65,13 @@ char *find_command_path(const char *command, char **env)
 	if (!command)
 	return (NULL);
 
-	if (command[0] == '/' || command[0] == '.')
-	{
-	if (access(command, X_OK) == 0)
-	{
-	fullpath = malloc(strlen(command) + 1);
-	if (!fullpath)
-	return (NULL);
-	strcpy(fullpath, command);
-	return (fullpath);
-	}
-	return (NULL);
-	}
+	fullpath = check_absolute(command);
+	if (fullpath)
+		return (fullpath);
 
+	path_env = get_path_from_env(env);
 	if (!path_env)
-	return (NULL);
+		return (NULL);
 
 	path_copy = malloc(strlen(path_env) + 1);
 	if (!path_copy)
