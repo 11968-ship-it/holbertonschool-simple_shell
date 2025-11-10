@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>   /* isatty, write */
+#include <unistd.h>
 #include "shell.h"
 
 /**
@@ -54,7 +54,7 @@ argcnt = build_argv(line, argv_list,
 (int)(sizeof(argv_list) /
 sizeof(argv_list[0])));
 if (argcnt > 0)
-execute(argv_list, shell_name, &last_exit_status);
+execute(argv_list, shell_name, &last_exit_status, line);
 
 free(line);
 line = NULL;
