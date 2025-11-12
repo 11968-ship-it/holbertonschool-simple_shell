@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <signal.h>
+
 /**
 * prompt - Prints the shell prompt
 */
@@ -113,4 +115,17 @@ return;
 }
 run_child(cmd_path, argv, last_exit_status);
 free(cmd_path);
+}
+
+/**
+* sigint_handler - Handles Ctrl+C (SIGINT)
+* @sig: The signal number (unused)
+*
+* This function prevents the shell from exiting when Ctrl+C is pressed.
+* It just prints a newline and re-displays the prompt.
+*/
+void sigint_handler(int sig)
+{
+(void)sig;
+write(STDOUT_FILENO, "\n#cisfun$ ", 10);
 }
