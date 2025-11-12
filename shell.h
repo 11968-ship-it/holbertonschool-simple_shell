@@ -23,8 +23,8 @@ void sigint_handler(int sig);
 int _setenv(const char *name, const char *value, int overwrite);
 int _unsetenv(const char *name);
 void builtin_env(void);
-void handle_setenv_builtin(char **argv);
-void handle_unsetenv_builtin(char **argv);
+int handle_setenv_builtin(char **argv);
+int handle_unsetenv_builtin(char **argv);
 void remove_comment(char *line);
 
 #endif
