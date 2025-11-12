@@ -10,19 +10,19 @@
  */
 int env_find_index(const char *name)
 {
-	int i, nlen;
+    int i, nlen;
 
-	if (!name || name[0] == '\0')
-		return (-1);
+    if (!name || name[0] == '\0')
+        return (-1);
 
-	nlen = (int)strlen(name);
+    nlen = (int)strlen(name);
 
-	for (i = 0; environ[i]; i++)
-	{
-		if (strncmp(environ[i], name, nlen) == 0 && environ[i][nlen] == '=')
-			return (i);
-	}
-	return (-1);
+    for (i = 0; environ[i]; i++)
+    {
+        if (strncmp(environ[i], name, nlen) == 0 && environ[i][nlen] == '=')
+            return (i);
+    }
+    return (-1);
 }
 
 /**
@@ -34,14 +34,14 @@ int env_find_index(const char *name)
 char *env_make_kv(const char *name, const char *value)
 {
 	const char *val = value ? value : "";
-	size_t len = strlen(name) + 1 + strlen(val) + 1;
-	char *p = malloc(len);
+    size_t len = strlen(name) + 1 + strlen(val) + 1;
+    char *p = malloc(len);
 
-	if (!p)
-		return (NULL);
+    if (!p)
+        return (NULL);
 
-	sprintf(p, "%s=%s", name, val);
-	return (p);
+    sprintf(p, "%s=%s", name, val);
+    return (p);
 }
 
 /**
@@ -58,6 +58,7 @@ int env_replace_index(int idx, const char *name, const char *value)
 	if (!kv)
 		return (-1);
 
+	free(environ[idx]);
 	environ[idx] = kv;
 	return (0);
 }
@@ -81,14 +82,18 @@ int env_append_kv(const char *name, const char *value)
 
 	new_env = malloc(sizeof(char *) * (count + 2));
 	if (!new_env)
+	{
+		free(kv);
 		return (-1);
-
+	}
+	
 	for (i = 0; i < count; i++)
 		new_env[i] = environ[i];
 
 	new_env[count] = kv;
 	new_env[count + 1] = NULL;
+	
 	environ = new_env;
-
+	free(old_env);
 	return (0);
 }
