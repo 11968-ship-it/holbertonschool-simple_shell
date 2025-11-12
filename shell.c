@@ -104,46 +104,6 @@ printf("%s\n", environ[i]);
 *last_exit_status = 0;
 return;
 }
-if (strcmp(argv[0], "setenv") == 0)
-{
-if (argv[1] && argv[2])
-{
-if (setenv(argv[1], argv[2], 1) != 0)
-{
-perror("setenv");
-*last_exit_status = 1;
-}
-else
-*last_exit_status = 0;
-}
-else
-{
-fprintf(stderr, "%s: setenv: usage: setenv VARIABLE VALUE\n",
-shell_name ? shell_name : "./hsh");
-*last_exit_status = 1;
-}
-return;
-}
-if (strcmp(argv[0], "unsetenv") == 0)
-{
-if (argv[1])
-{
-if (unsetenv(argv[1]) != 0)
-{
-perror("unsetenv");
-*last_exit_status = 1;
-}
-else
-*last_exit_status = 0;
-}
-else
-{
-fprintf(stderr, "%s: unsetenv: usage: unsetenv VARIABLE\n",
-shell_name ? shell_name : "./hsh");
-*last_exit_status = 1;
-}
-return;
-}
 
 cmd_path = find_command_path(argv[0], environ);
 if (!cmd_path)
