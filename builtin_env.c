@@ -4,12 +4,12 @@
 #include <string.h>
 
 /**
- * _setenv - Initialize or modify an environment variable.
- * @name: variable name (must be non-empty)
- * @value: variable value (may be NULL, treated as "")
- * @overwrite: 1 = overwrite existing, 0 = skip
- * Return: 0 on success, -1 on failure
- */
+	* _setenv - Initialize or modify an environment variable.
+	* @name: variable name (must be non-empty)
+	* @value: variable value (may be NULL, treated as "")
+	* @overwrite: 1 = overwrite existing, 0 = skip
+	* Return: 0 on success, -1 on failure
+	*/
 int _setenv(const char *name, const char *value, int overwrite)
 {
 	int idx;
@@ -28,12 +28,12 @@ int _setenv(const char *name, const char *value, int overwrite)
 }
 
 /**
- * _unsetenv - Remove an environment variable.
- * @name: variable name
- * Return: 0 on success, -1 on failure
- *
- * Note: Removing a non-existent variable is not an error.
- */
+	* _unsetenv - Remove an environment variable.
+	* @name: variable name
+	* Return: 0 on success, -1 on failure
+	*
+	* Note: Removing a non-existent variable is not an error.
+	*/
 int _unsetenv(const char *name)
 {
 	int i, idx;
@@ -52,8 +52,8 @@ int _unsetenv(const char *name)
 }
 
 /**
- * builtin_env - Display all environment variables.
- */
+	* builtin_env - Display all environment variables.
+	*/
 void builtin_env(void)
 {
 	int i;
@@ -63,28 +63,28 @@ void builtin_env(void)
 }
 
 /**
- * handle_setenv_builtin - Wrapper for setenv builtin.
- * @argv: argument vector
- * Return: 0 on success, 1 on failure
- */
+	* handle_setenv_builtin - Wrapper for setenv builtin.
+	* @argv: argument vector
+	* Return: 0 on success, 1 on failure
+	*/
 int handle_setenv_builtin(char **argv)
 {
 if (!argv[1] || !argv[2] || argv[3])
-    {
-        fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
-        return (1);
-    }
+	{
+	fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
+	return (1);
+	}
 
-    if (_setenv(argv[1], argv[2], 1) == 0)
-        return (0);
-    return (1);
+	if (_setenv(argv[1], argv[2], 1) == 0)
+	return (0);
+	return (1);
 }
 
 /**
- * handle_unsetenv_builtin - Wrapper for unsetenv builtin.
- * @argv: argument vector
- * Return: 0 on success, 1 on failure
- */
+	* handle_unsetenv_builtin - Wrapper for unsetenv builtin.
+	* @argv: argument vector
+	* Return: 0 on success, 1 on failure
+	*/
 int handle_unsetenv_builtin(char **argv)
 {
 	if (!argv[1] || argv[2])
