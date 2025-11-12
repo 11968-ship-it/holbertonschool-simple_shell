@@ -4,16 +4,14 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
-
 /**
 * prompt - Prints the shell prompt
 */
 void prompt(void)
 {
-	if (isatty(STDIN_FILENO))
-	write(STDOUT_FILENO, "#cisfun$ ", 9);
+if (isatty(STDIN_FILENO))
+write(STDOUT_FILENO, "#cisfun$ ", 9);
 }
-
 /**
 * read_line - reads a line and removes newline
 *
@@ -22,26 +20,22 @@ void prompt(void)
  */
 char *read_line(void)
 {
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t nread;
-
-	nread = getline(&line, &len, stdin);
-	if (nread == -1)
-	{
-	free(line);
-	return (NULL);
-	}
-
+char *line = NULL;
+size_t len = 0;
+ssize_t nread;
+nread = getline(&line, &len, stdin);
+if (nread == -1)
+{
+free(line);
+return (NULL);
+}
 while (nread > 0 && (line[nread - 1] == '\n' ||
 line[nread - 1] == ' ' ||
 line[nread - 1] == '\r' ||
 line[nread - 1] == '\t'))
 line[--nread] = '\0';
-
 return (line);
 }
-
 /**
  * run_child - Forks and executes a command in a child process.
  *
@@ -55,33 +49,30 @@ return (line);
 static void run_child(char *cmd_path, char **argv, int *last_exit_status)
 {
 pid_t child_pid;
-	int status;
-
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-	perror("fork");
-	*last_exit_status = 1;
-	free(cmd_path);
-	return;
-	}
-
-	if (child_pid == 0)
-	{
-	execv(cmd_path, argv);
-	perror("execv");
-	_exit(127);
-	}
-	else
-	{
-	waitpid(child_pid, &status, 0);
-	if (WIFEXITED(status))
-	*last_exit_status = WEXITSTATUS(status);
-	else
-	*last_exit_status = 1;
-	}
+int status;
+child_pid = fork();
+if (child_pid == -1)
+{
+perror("fork");
+*last_exit_status = 1;
+free(cmd_path);
+return;
 }
-
+if (child_pid == 0)
+{
+execv(cmd_path, argv);
+perror("execv");
+_exit(127);
+}
+else
+{
+waitpid(child_pid, &status, 0);
+if (WIFEXITED(status))
+*last_exit_status = WEXITSTATUS(status);
+else
+*last_exit_status = 1;
+}
+}
 /**
  * execute - Runs a command entered by the user.
  *
@@ -94,35 +85,31 @@ pid_t child_pid;
 extern char **environ;
 void execute(char **argv, const char *shell_name, int *last_exit_status, char *line)
 {
-    char *cmd_path;
-	int i;
-	
-    if (!argv || !argv[0])
-        return;
-	
-    if (strcmp(argv[0], "exit") == 0)
-    {
-        free(line);
-        exit(*last_exit_status);
-    }
-	
-
-    if (strcmp(argv[0], "env") == 0)
-	{
-		for (i = 0; environ[i]; i++)
-			printf("%s\n", environ[i]);
-		*last_exit_status = 0;
-		return;		
-	}
-    cmd_path = find_command_path(argv[0], environ);
-    if (!cmd_path)
-    {
-        fprintf(stderr, "%s: 1: %s: not found\n",
-                shell_name ? shell_name : "./hsh",
-                argv[0]);
-        *last_exit_status = 127;
-        return;
-    }
-    run_child(cmd_path, argv, last_exit_status);
-    free(cmd_path);
+char *cmd_path;
+int i;
+if (!argv || !argv[0])
+return;
+if (strcmp(argv[0], "exit") == 0)
+{
+free(line);
+exit(*last_exit_status);
+}
+if (strcmp(argv[0], "env") == 0)
+{
+for (i = 0; environ[i]; i++)
+printf("%s\n", environ[i]);
+*last_exit_status = 0;
+return;		
+}
+cmd_path = find_command_path(argv[0], environ);
+if (!cmd_path)
+{
+fprintf(stderr, "%s: 1: %s: not found\n",
+shell_name ? shell_name : "./hsh",
+argv[0]);
+*last_exit_status = 127;
+return;
+}
+run_child(cmd_path, argv, last_exit_status);
+free(cmd_path);
 }
