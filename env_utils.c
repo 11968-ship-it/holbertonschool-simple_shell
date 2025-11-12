@@ -72,6 +72,7 @@ int env_replace_index(int idx, const char *name, const char *value)
 int env_append_kv(const char *name, const char *value)
 {
 	int i, count;
+	char **new_env, **old_env; 
 	char **new_env, *kv = env_make_kv(name, value);
 
 	if (!kv)
@@ -92,8 +93,10 @@ int env_append_kv(const char *name, const char *value)
 
 	new_env[count] = kv;
 	new_env[count + 1] = NULL;
-	
+
+	old_env = environ;
 	environ = new_env;
 	free(old_env);
+	
 	return (0);
 }
