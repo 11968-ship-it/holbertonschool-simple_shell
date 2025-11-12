@@ -25,7 +25,16 @@ tok = strtok(NULL, " \t\n");
 argv_list[i] = NULL;
 return (i);
 }
-
+/**
+ * remove_comment - Remove comments from a command line.
+ * @line: The command line (will be modified in place)
+ */
+void remove_comment(char *line)
+{
+char *p = strchr(line, '#');
+if (p)
+*p = '\0';
+}
 /**
 * run_shell - The main read–execute loop of the shell.
 * @shell_name: Name of the shell program (argv[0]).
