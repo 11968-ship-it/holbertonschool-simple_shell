@@ -81,6 +81,7 @@ else
 * @argv: Argument list for the command (argv[0] is the name).
 * @shell_name: Name of the shell, used in error messages.
 * @last_exit_status: Pointer to store the command's exit status.
+* @line: User input line, freed on exit.
 */
 void execute(char **argv, const char *shell_name,
 int *last_exit_status, char *line)
