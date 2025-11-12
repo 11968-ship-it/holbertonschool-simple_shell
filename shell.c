@@ -106,16 +106,16 @@ return;
 }
 if (strcmp(argv[0], "setenv") == 0)
 {
-if (!argv[1] || !argv[2])
-{
-fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
-*last_exit_status = 1;
-return;
+    handle_setenv_builtin(argv);
+    *last_exit_status = 0;
+    return;
 }
-if (_setenv(argv[1], argv[2], 1) != 0)
-fprintf(stderr, "setenv: failed to set variable\n");
-*last_exit_status = 0;
-return;
+
+if (strcmp(argv[0], "unsetenv") == 0)
+{
+    handle_unsetenv_builtin(argv);
+    *last_exit_status = 0;
+    return;
 }
 
 if (strcmp(argv[0], "unsetenv") == 0)
