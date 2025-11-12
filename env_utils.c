@@ -73,8 +73,8 @@ int env_append_kv(const char *name, const char *value)
 {
 	int i, count;
 	char **new_env, **old_env; 
-	char **new_env, *kv = env_make_kv(name, value);
-
+	char *kv = env_make_kv(name, value);
+	
 	if (!kv)
 		return (-1);
 
