@@ -39,6 +39,10 @@ char *argv_list[64];
 int argcnt;
 int last_exit_status = 0;
 
+ /* Declare variables at top (C90 rule) */
+    char *line_copy;
+    char *command;
+
 signal(SIGINT, sigint_handler);
 
 for (;;)
@@ -51,16 +55,21 @@ if (isatty(STDIN_FILENO))
 write(STDOUT_FILENO, "\n", 1);
 break;
 }
-
- /* Split line into commands separated by ';' */
-char *line_copy = strdup(line);
-char *command = strtok(line_copy, ";");
+/* Duplicate line for splitting */
+line_copy = strdup(line);
+if (!line_copy)
+{
+free(line);
+continue;
+}
+/* Split by ';' */
+command = strtok(line_copy, ";");
 while (command)
 {
 /* Trim leading spaces */
 while (*command == ' ')
 command++;
-
+			
 argcnt = build_argv(line, argv_list,
 (int)(sizeof(argv_list) /
 sizeof(argv_list[0])));
