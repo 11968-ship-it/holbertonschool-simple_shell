@@ -27,17 +27,19 @@ return (i);
 }
 
 /**
- * run_shell - The main read–execute loop of the shell.
- * @shell_name: Name of the shell program (argv[0]).
- *
- * Return: void.
- */
+* run_shell - The main read–execute loop of the shell.
+* @shell_name: Name of the shell program (argv[0]).
+*
+* Return: void.
+*/
 static int run_shell(const char *shell_name)
 {
 char *line;
 char *argv_list[64];
 int argcnt;
 int last_exit_status = 0;
+
+signal(SIGINT, sigint_handler);
 
 for (;;)
 {
