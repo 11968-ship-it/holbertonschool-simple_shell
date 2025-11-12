@@ -99,7 +99,7 @@ if (strcmp(argv[0], "env") == 0)
 for (i = 0; environ[i]; i++)
 printf("%s\n", environ[i]);
 *last_exit_status = 0;
-return;		
+return;
 }
 cmd_path = find_command_path(argv[0], environ);
 if (!cmd_path)
