@@ -37,15 +37,15 @@ line[--nread] = '\0';
 return (line);
 }
 /**
- * run_child - Forks and executes a command in a child process.
- *
- * Forks the current process to run a command via execv().
- * The parent waits for the child and updates the exit status.
- *
- * @cmd_path: Path to the executable command.
- * @argv: Argument list for the command.
- * @last_exit_status: Pointer to store the command's exit code.
- */
+* run_child - Forks and executes a command in a child process.
+*
+* Forks the current process to run a command via execv().
+* The parent waits for the child and updates the exit status.
+*
+* @cmd_path: Path to the executable command.
+* @argv: Argument list for the command.
+* @last_exit_status: Pointer to store the command's exit code.
+*/
 static void run_child(char *cmd_path, char **argv, int *last_exit_status)
 {
 pid_t child_pid;
@@ -74,14 +74,14 @@ else
 }
 }
 /**
- * execute - Runs a command entered by the user.
- *
- * Finds and runs a command by name. Prints an error if not found.
- *
- * @argv: Argument list for the command (argv[0] is the name).
- * @shell_name: Name of the shell, used in error messages.
- * @last_exit_status: Pointer to store the command's exit status.
- */
+* execute - Runs a command entered by the user.
+*
+* Finds and runs a command by name. Prints an error if not found.
+*
+* @argv: Argument list for the command (argv[0] is the name).
+* @shell_name: Name of the shell, used in error messages.
+* @last_exit_status: Pointer to store the command's exit status.
+*/
 extern char **environ;
 void execute(char **argv, const char *shell_name, int *last_exit_status, char *line)
 {
