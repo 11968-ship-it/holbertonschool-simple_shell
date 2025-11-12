@@ -31,9 +31,18 @@ return (i);
  */
 void remove_comment(char *line)
 {
-char *p = strchr(line, '#');
-if (p)
-*p = '\0';
+if (!line) return;
+for (int i = 0; line[i]; i++)
+{
+if (line[i] == '#')
+{
+if (i == 0 || line[i-1] == ' ' || line[i-1] == '\t')
+{
+line[i] = '\0';
+break;
+}
+}
+}
 }
 /**
 * run_shell - The main read–execute loop of the shell.
