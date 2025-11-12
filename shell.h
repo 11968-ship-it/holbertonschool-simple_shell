@@ -15,7 +15,7 @@ extern char **environ;
 extern int last_exit_status;
 void simple_shell(void);
 void prompt(void);
-void execute(char **argv, const char *shell_name, 
+void execute(char **argv, const char *shell_name,
 int *last_exit_status, char *line);
 char *read_line(void);
 char *find_command_path(const char *command, char **env);
