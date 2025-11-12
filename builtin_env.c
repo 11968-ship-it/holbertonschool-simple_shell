@@ -51,8 +51,9 @@ int _setenv(const char *name, const char *value, int overwrite)
         return (-1);
 
 for (i = 0; i < count; i++)
+    {
     new_environ[i] = environ[i];
-
+    }
     new_environ[count] = new_var;
     new_environ[count + 1] = NULL;
     environ = new_environ;
