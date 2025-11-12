@@ -104,33 +104,19 @@ printf("%s\n", environ[i]);
 *last_exit_status = 0;
 return;
 }
+
 if (strcmp(argv[0], "setenv") == 0)
 {
-    handle_setenv_builtin(argv);
-    *last_exit_status = 0;
-    return;
+*last_exit_status = handle_setenv_builtin(argv);
+return;
 }
 
 if (strcmp(argv[0], "unsetenv") == 0)
 {
-    handle_unsetenv_builtin(argv);
-    *last_exit_status = 0;
-    return;
+*last_exit_status = handle_unsetenv_builtin(argv);
+return;
 }
 
-if (strcmp(argv[0], "unsetenv") == 0)
-{
-if (!argv[1])
-{
-fprintf(stderr, "Usage: unsetenv VARIABLE\n");
-*last_exit_status = 1;
-return;
-}
-if (_unsetenv(argv[1]) != 0)
-fprintf(stderr, "unsetenv: failed to unset variable\n");
-*last_exit_status = 0;
-return;
-}
 cmd_path = find_command_path(argv[0], environ);
 if (!cmd_path)
 {
