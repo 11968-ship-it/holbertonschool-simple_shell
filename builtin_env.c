@@ -14,8 +14,8 @@ int _setenv(const char *name, const char *value, int overwrite)
 {
     int i, name_len, count;
     char *new_var, **new_environ;
-    const char *val = value ? value : ""; /* treat NULL as empty string */
-
+    const char *val = value ? value : "";
+    
     if (!name)
         return (-1);
 
@@ -52,14 +52,14 @@ int _setenv(const char *name, const char *value, int overwrite)
     if (!new_environ)
         return (-1);
 
-    for (i = 0; i < count; i++)
-        new_environ[i] = environ[i];
+for (i = 0; i < count; i++)
+    new_environ[i] = environ[i];
 
     new_environ[count] = new_var;
     new_environ[count + 1] = NULL;
     environ = new_environ;
 
-    return (0);
+return (0);
 }
 
 /**
@@ -109,7 +109,6 @@ void handle_setenv_builtin(char **argv)
 {
     if (!argv[1])
     {
-        /* Missing variable name */
         fprintf(stderr, "Usage: setenv VARIABLE [VALUE]\n");
         return;
     }
@@ -128,7 +127,6 @@ void handle_unsetenv_builtin(char **argv)
 {
     if (!argv[1])
     {
-        /* Missing variable name */
         fprintf(stderr, "Usage: unsetenv VARIABLE\n");
         return;
 }
