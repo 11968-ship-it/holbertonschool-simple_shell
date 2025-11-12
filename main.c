@@ -31,8 +31,9 @@ return (i);
  */
 void remove_comment(char *line)
 {
+int i;
 if (!line) return;
-for (int i = 0; line[i]; i++)
+for (i = 0; line[i]; i++)
 {
 if (line[i] == '#')
 {
