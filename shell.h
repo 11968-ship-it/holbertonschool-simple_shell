@@ -26,5 +26,10 @@ void builtin_env(void);
 int handle_setenv_builtin(char **argv);
 int handle_unsetenv_builtin(char **argv);
 void remove_comment(char *line);
+/* env helper utilities (in env_utils.c) */
+int env_find_index(const char *name);
+char *env_make_kv(const char *name, const char *value);
+int env_replace_index(int idx, const char *name, const char *value);
+int env_append_kv(const char *name, const char *value);
 
 #endif
