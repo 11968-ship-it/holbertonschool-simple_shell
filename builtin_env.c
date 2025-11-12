@@ -4,9 +4,9 @@
 #include <string.h>
 
 /**
- * _setenv - Custom setenv implementation (no realloc)
- * @name: variable name
- * @value: variable value (NULL allowed, treated as "")
+ * _setenv - Custom setenv implementation (no realloc on old environ)
+ * @name: variable name (must be non-empty)
+ * @value: variable value (may be NULL, treated as "")
  * @overwrite: 1 = overwrite existing, 0 = skip
  * Return: 0 on success, -1 on failure
  */
@@ -15,21 +15,22 @@ int _setenv(const char *name, const char *value, int overwrite)
     int i, name_len, count;
     char *new_var, **new_environ;
     const char *val = value ? value : "";
-    
-    if (!name)
+
+    if (!name || name[0] == '\0')
         return (-1);
 
-    name_len = strlen(name);
+    name_len = (int)strlen(name);
 
+    /* Check if variable exists */
     for (i = 0; environ[i]; i++)
     {
-        if (strncmp(environ[i], name, name_len) == 0 &&
-            environ[i][name_len] == '=')
+        if (strncmp(environ[i], name, name_len) == 0 && environ[i][name_len] == '=')
         {
             if (!overwrite)
                 return (0);
-            free(environ[i]);
-            new_var = malloc(name_len + strlen(val) + 2);
+
+            /* Build replacement string (do NOT free old environ[i]) */
+            new_var = malloc(name_len + 1 + strlen(val) + 1);
             if (!new_var)
                 return (-1);
             sprintf(new_var, "%s=%s", name, val);
@@ -38,7 +39,8 @@ int _setenv(const char *name, const char *value, int overwrite)
         }
     }
 
-    new_var = malloc(name_len + strlen(val) + 2);
+    /* Append as a new variable */
+    new_var = malloc(name_len + 1 + strlen(val) + 1);
     if (!new_var)
         return (-1);
     sprintf(new_var, "%s=%s", name, val);
@@ -50,37 +52,38 @@ int _setenv(const char *name, const char *value, int overwrite)
     if (!new_environ)
         return (-1);
 
-for (i = 0; i < count; i++)
-    {
-    new_environ[i] = environ[i];
-    }
+    for (i = 0; i < count; i++)
+        new_environ[i] = environ[i];
     new_environ[count] = new_var;
     new_environ[count + 1] = NULL;
+
+    /* Assign without freeing old environ (ownership is unknown) */
     environ = new_environ;
 
-return (0);
+    return (0);
 }
 
 /**
  * _unsetenv - Custom unsetenv implementation
- * @name: variable name
+ * @name: variable name (must be non-empty)
  * Return: 0 on success, -1 on failure
+ *
+ * Note: Removing a non-existent variable is not an error.
  */
 int _unsetenv(const char *name)
 {
     int i, j, name_len;
 
-    if (!name)
+    if (!name || name[0] == '\0')
         return (-1);
 
-    name_len = strlen(name);
+    name_len = (int)strlen(name);
 
     for (i = 0; environ[i]; i++)
     {
-        if (strncmp(environ[i], name, name_len) == 0 &&
-            environ[i][name_len] == '=')
+        if (strncmp(environ[i], name, name_len) == 0 && environ[i][name_len] == '=')
         {
-            free(environ[i]);
+            /* Shift pointers left; do NOT free(environ[i]) */
             for (j = i; environ[j]; j++)
                 environ[j] = environ[j + 1];
             return (0);
@@ -90,46 +93,43 @@ int _unsetenv(const char *name)
 }
 
 /**
- * builtin_env - Display environment variables
+ * builtin_env - Display environment variables to stdout
  */
 void builtin_env(void)
 {
     int i;
-
     for (i = 0; environ[i]; i++)
         printf("%s\n", environ[i]);
 }
 
 /**
- * handle_setenv_builtin - Wrapper to execute setenv builtin
- * @argv: argument vector
+ * handle_setenv_builtin - setenv wrapper with strict arity + stderr usage
+ * @argv: argument vector (expects: setenv VARIABLE VALUE)
+ * Return: 0 on success, 1 on failure
  */
-void handle_setenv_builtin(char **argv)
+int handle_setenv_builtin(char **argv)
 {
-    if (!argv[1])
+    /* Exactly VARIABLE and VALUE (argv[1], argv[2]), and no argv[3] */
+    if (!argv[1] || !argv[2] || argv[3])
     {
-        fprintf(stderr, "Usage: setenv VARIABLE [VALUE]\n");
-        return;
+        fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
+        return (1);
     }
-
-    if (_setenv(argv[1], argv[2], 1) == 0)
-        printf("OK\n");
-    else
-        fprintf(stderr, "setenv failed\n");
+    return (_setenv(argv[1], argv[2], 1) == 0) ? 0 : 1;
 }
 
 /**
- * handle_unsetenv_builtin - Wrapper to execute unsetenv builtin
- * @argv: argument vector
+ * handle_unsetenv_builtin - unsetenv wrapper with strict arity + stderr usage
+ * @argv: argument vector (expects: unsetenv VARIABLE)
+ * Return: 0 on success, 1 on failure
  */
-void handle_unsetenv_builtin(char **argv)
+int handle_unsetenv_builtin(char **argv)
 {
-    if (!argv[1])
+    /* Exactly one parameter */
+    if (!argv[1] || argv[2])
     {
         fprintf(stderr, "Usage: unsetenv VARIABLE\n");
-        return;
-}
-
-if (_unsetenv(argv[1]) != 0)
-fprintf(stderr, "unsetenv failed\n");
+        return (1);
+    }
+    return (_unsetenv(argv[1]) == 0) ? 0 : 1;
 }
