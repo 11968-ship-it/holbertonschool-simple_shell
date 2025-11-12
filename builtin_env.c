@@ -21,7 +21,6 @@ int _setenv(const char *name, const char *value, int overwrite)
 
     name_len = strlen(name);
 
-    /* Check if variable exists */
     for (i = 0; environ[i]; i++)
     {
         if (strncmp(environ[i], name, name_len) == 0 &&
@@ -39,7 +38,6 @@ int _setenv(const char *name, const char *value, int overwrite)
         }
     }
 
-    /* Add new variable */
     new_var = malloc(name_len + strlen(val) + 2);
     if (!new_var)
         return (-1);
