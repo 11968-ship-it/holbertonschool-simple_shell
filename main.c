@@ -76,7 +76,8 @@ static int run_shell(const char *shell_name)
         {
             while (*command == ' ')
                 command++;
-
+			
+remove_commment(command);
             argcnt = build_argv(command, argv_list,
                     (int)(sizeof(argv_list) / sizeof(argv_list[0])));
 
