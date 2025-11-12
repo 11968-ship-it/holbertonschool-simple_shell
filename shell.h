@@ -22,5 +22,7 @@ char *find_command_path(const char *command, char **env);
 void sigint_handler(int sig);
 int _setenv(const char *name, const char *value, int overwrite);
 int _unsetenv(const char *name);
+ */
+void remove_comment(char *line);
 
 #endif
