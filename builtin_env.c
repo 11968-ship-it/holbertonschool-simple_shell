@@ -69,16 +69,15 @@ void builtin_env(void)
  */
 int handle_setenv_builtin(char **argv)
 {
-	if (!argv[1] || !argv[2] || argv[3])
-	{
-		fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
-		return (1);
-	}
+if (!argv[1] || !argv[2] || argv[3])
+    {
+        fprintf(stderr, "Usage: setenv VARIABLE VALUE\n");
+        return (1);
+    }
 
-	if (_setenv(argv[1], argv[2], 1) == 0)
-		return (0);
-
-	return (1);
+    if (_setenv(argv[1], argv[2], 1) == 0)
+        return (0);
+    return (1);
 }
 
 /**
