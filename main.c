@@ -34,55 +34,56 @@ return (i);
 */
 static int run_shell(const char *shell_name)
 {
-char *line;
-char *argv_list[64];
-int argcnt;
-int last_exit_status = 0;
+    char *line;
+    char *argv_list[64];
+    int argcnt;
+    int last_exit_status = 0;
 
- /* Declare variables at top (C90 rule) */
     char *line_copy;
     char *command;
 
-signal(SIGINT, sigint_handler);
+    signal(SIGINT, sigint_handler);
 
-for (;;)
-{
-prompt();
-line = read_line();
-if (!line)
-{
-if (isatty(STDIN_FILENO))
-write(STDOUT_FILENO, "\n", 1);
-break;
-}
-/* Duplicate line for splitting */
-line_copy = strdup(line);
-if (!line_copy)
-{
-free(line);
-continue;
-}
-/* Split by ';' */
-command = strtok(line_copy, ";");
-while (command)
-{
-/* Trim leading spaces */
-while (*command == ' ')
-command++;
-			
-argcnt = build_argv(line, argv_list,
-(int)(sizeof(argv_list) /
-sizeof(argv_list[0])));
+    for (;;)
+    {
+        prompt();
+        line = read_line();
+        if (!line)
+        {
+            if (isatty(STDIN_FILENO))
+                write(STDOUT_FILENO, "\n", 1);
+            break;
+        }
 
-if (argcnt > 0)
-execute(argv_list, shell_name, &last_exit_status, line);
+        line_copy = strdup(line);
+        if (!line_copy)
+        {
+            free(line);
+            continue;
+        }
 
-free(line);
-line = NULL;
-}
-	return (last_exit_status);
-}
+        command = strtok(line_copy, ";");
+        while (command)
+        {
+            while (*command == ' ')
+                command++;
 
+            argcnt = build_argv(command, argv_list,
+                    (int)(sizeof(argv_list) / sizeof(argv_list[0])));
+
+            if (argcnt > 0)
+                execute(argv_list, shell_name, &last_exit_status, line);
+
+            command = strtok(NULL, ";");
+        }
+
+        free(line_copy);
+        free(line);
+        line = NULL;
+    }
+
+    return (last_exit_status);
+}
 /**
  * main - Program entry point.
  * @argc: Argument count.
