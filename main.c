@@ -52,9 +52,19 @@ write(STDOUT_FILENO, "\n", 1);
 break;
 }
 
+ /* Split line into commands separated by ';' */
+char *line_copy = strdup(line);
+char *command = strtok(line_copy, ";");
+while (command)
+{
+/* Trim leading spaces */
+while (*command == ' ')
+command++;
+
 argcnt = build_argv(line, argv_list,
 (int)(sizeof(argv_list) /
 sizeof(argv_list[0])));
+
 if (argcnt > 0)
 execute(argv_list, shell_name, &last_exit_status, line);
 
